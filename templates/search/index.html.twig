@@ -10,7 +10,6 @@
 
 <div class="example-wrapper">
     <h1>Résultats de la recherche pour "{{ query }}"</h1>
-
     {% if results is empty %}
         <p>Aucun résultat trouvé.</p>
     {% else %}
@@ -22,13 +21,18 @@
                     <p>{{ article.content }}</p>
                     <p>Prix : {{ article.price }} €</p>
                     <p>Date de création : {{ article.createdAt|date('d/m/Y H:i') }}</p>
-                    <form method="POST" action="{#{{ path('add_to_cart', {'id': article.id}) }}#}">
-                        <button type="submit">Ajouter au Panier</button>
+                    {% if app.user %}
+                    <form method="POST" action="{{ path('app_cart_add_to_cart', {'id': article.id}) }}">
+                    <input type="number" name="quantity" value="1">
+                    <button type="submit">Ajouter au Panier avec Quantité</button>
                     </form>
-                    <button>Panier</button>
-                    <form method="POST" action="{#{{ path('simulate_purchase') }}#}">
+                    <form method="POST" action="{#{{ path('app_cart_purchase', {'id': article.id}) }}#}">
                         <button type="submit">Acheter</button>
                     </form>
+                    {% else %}
+                    <button type ="button" disabled>Ajouter au Panier (Connectez-vous d'abord)</button>
+                    <button type ="button" disabled>Acheter (Connectez-vous d'abord)</button>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>

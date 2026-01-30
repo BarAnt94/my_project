@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CartController{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <section class="cart">
+        <h2>Votre Panier</h2>
+        {% if cart|length == 0 %}
+            <p>Votre panier est vide.</p>
+        {% else %}
+            <ul>
+                {% for item in data %}
+                    <li>
+                        <h3>{{ item.article.title }}</h3>
+                        <img src="{{ asset('img_articles/' ~ item.article.photo) }}" alt="Photo de l'article" width="200" height="200">
+                        <p>Quantité : {{ item.quantity }}</p>
+                        <p>Prix unitaire : {{ item.article.price }} €</p>
+                        <p>Sous-total : {{ item.article.price * item.quantity }} €</p>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_cart_add_to_cart', {'id': item.article.id}) }}" class="btn btn-success">+</a>
+                        <a href="{{ path('app_cart_decrease_from_cart', {'id': item.article.id}) }}" class="btn btn-warning">-</a>
+                        <a href="{{ path('app_cart_remove_from_cart', {'id': item.article.id}) }}" class="btn btn-danger">Supprimer</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <h3>Total : {{ total }} €</h3>
+            <form method="POST" action="{#{{ path('app_cart_purchase') }}#}">
+                <button type="submit" class="btn btn-primary">Acheter</button>
+            </form>
+        {% endif %}
+</div>
+{% endblock %}

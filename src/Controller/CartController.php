@@ -3,30 +3,78 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/cart', name: 'app_cart')]
+#[Route('/cart', name: 'app_cart_')]
 final class CartController extends AbstractController
 {
-    #[Route('/', name: 'cart_index', methods: ['GET'])]
-    public function index(SessionInterface $session): Response
+    #[Route('/', name: 'cart_index', methods: ['POST','GET'])]
+    public function index(SessionInterface $session, ArticleRepository $articleRepository)
     {
         $cart = $session->get('cart', []);
-        return $this->render('cart/index.html.twig', [
+        $data = [];
+        $total = 0;
+        foreach ($cart as $id=>$quantity) {
+            $article = $articleRepository->find($id);
+            if ($article) {
+                $data[] = ['article' => $article, 'quantity' => $quantity];
+                $total += $article->getPrice() * $quantity;
+                $session->set('cart_total', $total);
+            }
+        }
+        return $this->render('cart/cart.html.twig',compact('data','total','cart') + [
+            'items' => $data,
+            'total' => $total,
             'cart' => $cart,
         ]);
+        return $this->redirectToRoute('app_accueil');
     }
-    #[Route('/add/{id}', name: 'add_to_cart', methods: ['POST'])]
-    public function add(Article $article, SessionInterface $session): void
+    #[Route('/add/{id}', name: 'add_to_cart', methods: ['POST','GET'])]
+    public function add(int $id, Request $request, ArticleRepository $articleRepository, SessionInterface $session): Response
     {
-        $id = $article->getId();
+        $article = $articleRepository->find($id);
+        if (!$article) {
+            throw $this->createNotFoundException('Article not found');
+        }
+        $quantity = max(1, (int) $request->request->get('quantity', 1));
         $cart = $session->get('cart', []);
-        if (!in_array($id, $cart, true)) {
-            $cart[] = $id;
+        if (!isset($cart[$id])) {
+        $cart[$id] = $quantity;
+        } 
+        else {
+            $cart[$id] += $quantity;
+        }
+        $session->set('cart', $cart);
+        return $this->redirectToRoute('app_cart_cart_index');
+    }
+    #[Route('/decrease/{id}', name: 'decrease_from_cart', methods: ['POST','GET'])]
+    public function decrease(int $id, SessionInterface $session): Response
+    {
+        $cart = $session->get('cart', []);
+        if (isset($cart[$id])) {
+            if ($cart[$id] > 1) {
+                $cart[$id]--;
+            } else {
+                unset($cart[$id]);
+            }
             $session->set('cart', $cart);
         }
+        return $this->redirectToRoute('app_cart_cart_index');
     }
+    #[Route('/remove/{id}', name: 'remove_from_cart', methods: ['POST','GET'])]
+    public function remove(int $id, SessionInterface $session): Response
+    {
+        $cart = $session->get('cart', []);
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+            $session->set('cart', $cart);
+        }
+        return $this->redirectToRoute('app_cart_cart_index');
+    }
+    
 }

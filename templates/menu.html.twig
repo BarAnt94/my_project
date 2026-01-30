@@ -14,14 +14,18 @@
           <a class="nav-link" href="{#{{ path('app_article_list') }}#}">Catalogues</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{# {{ path('app_commande_list') }}#}">Panier</a>
+          <a class="nav-link" href="{{ path('app_cart_cart_index') }}">Panier</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Profil</a>
+          {% if app.user %}
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a>
+            <a class="dropdown-item" href="{{ path('app_user_profile') }}">Mon Profil</a>
             <a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
-            <a class="dropdown-item" href="{#{{ path('app_settings') }}#}">Paramètres</a>
+            {# <a class="dropdown-item" href="{{ path('app_user_profile') }}">Paramètres</a> #}
+            {% else %}
+            <a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a>
+            {% endif %}
           </div>
         </li>
       </ul>

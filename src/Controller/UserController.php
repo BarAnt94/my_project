@@ -16,6 +16,14 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/user')]
 final class UserController extends AbstractController
 {
+    #[Route(name: 'app_user_profile', methods: ['GET'])]
+    public function profile(UserRepository $userRepository): Response
+    {
+        return $this->render('user/profile.html.twig', [
+            'users' => $userRepository->findAll(),
+        ]);
+    }
+
     #[Route(name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {

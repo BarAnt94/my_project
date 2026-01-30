@@ -3,12 +3,6 @@
 
 {% block body %}
 <h1>Bienvenue sur la page d'accueil!</h1>
-{% if user %}
-    Vous êtes connecté(e) !
-{% else %}
-    Vous n'êtes pas connecté(e).
-{% endif %}
-
 <p>Voici quelques produits en vedette :</p>
 <ul>
     {% for article in articles %}
@@ -18,8 +12,19 @@
             <p>{{ article.content }}</p>
             <p>Prix : {{ article.price }} €</p>
             <p>Date de création : {{ article.createdAt|date('d/m/Y H:i') }}</p>
-            <button>Panier</button>
-            <button>Acheter</button>
+            {% if app.user %}
+                <form method="POST" action="{{ path('app_cart_add_to_cart', {'id': article.id}) }}">
+                <input type="number" name="quantity" value="1">
+                <button type="submit">Ajouter au Panier avec Quantité</button>
+                </form>
+                <form method="POST" action="{#{{ path('app_simulate_purchase') }}#}">
+                    <button type="submit">Acheter</button>
+                </form>
+            {% else %}
+                <button type ="button" disabled>Ajouter au Panier (Connectez-vous d'abord)</button>
+                <button type ="button" disabled>Acheter (Connectez-vous d'abord)</button>
+            {% endif %}
+        
         </li>
     {% endfor %}
 </ul>

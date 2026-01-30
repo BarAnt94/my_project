@@ -15,11 +15,11 @@ final class ArticleController extends AbstractController
     public function create(EntityManagerInterface $entityManager): Response
     {
         $article = new Article();
-        $article->setTitle('Mon premier article');
-        $article->setContent('Ceci est le contenu de mon premier article.');
+        $article->setTitle('Bouteille de vin');
+        $article->setContent('Une bouteille de vin rouge de qualité.');
         $article->setCreatedAt(new \DateTime());
         $article->setPrice('19.99');
-        $article->setPhoto(''); // Placeholder for photo data
+        $article->setPhoto('bouteille-vin-isolee-blanc_167946-4.avif'); // Placeholder for photo data
         $entityManager->persist($article);
         $entityManager->flush();
         return new Response('Article créé avec l\'ID : ' . $article->getId());

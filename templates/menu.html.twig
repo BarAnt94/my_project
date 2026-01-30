@@ -8,22 +8,20 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+          <a class="nav-link" href="{{ path('app_user_new') }}">Inscription</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ path('app_user_new') }}">Inscription</a>
+          <a class="nav-link" href="{#{{ path('app_article_list') }}#}">Catalogues</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{# {{ path('app_commande_list') }}#}">Panier</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Explorer</a>
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Profil</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Catégorie</a>
-            <a class="dropdown-item" href="#">Marque</a>
-            <a class="dropdown-item" href="{{ path('app_article_show') }}">Produits</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
+            <a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a>
+            <a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
+            <a class="dropdown-item" href="{#{{ path('app_settings') }}#}">Paramètres</a>
           </div>
         </li>
       </ul>

@@ -4,13 +4,12 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-// use Dom\Text;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-// use Symfony\Component\Mime\Email;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 
@@ -27,8 +26,13 @@ class UserType extends AbstractType
                 'label' => 'Nom',
                 'constraints'=>new Length(null, min:2, max:25),
             ])
-            ->add('password',TextType::class, [
+            ->add('password',RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'Les mots de passe doivent correspondre.',
                 'label' => 'Mot de passe',
+                'required' => true,
+                'first_options'  => ['label' => 'Mot de passe'],
+                'second_options' => ['label' => 'Confirmer le mot de passe'],
                 'constraints'=>new Length(null, min:8, max:255),
             ])
             ->add('birthday',DateType::class, [

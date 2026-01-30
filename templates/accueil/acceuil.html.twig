@@ -3,10 +3,24 @@
 
 {% block body %}
 <h1>Bienvenue sur la page d'accueil!</h1>
+{% if user %}
+    Vous êtes connecté(e) !
+{% else %}
+    Vous n'êtes pas connecté(e).
+{% endif %}
+
 <p>Voici quelques produits en vedette :</p>
 <ul>
-    <li>Produit 1</li>
-    <li>Produit 2</li>
-    <li>Produit 3</li>
+    {% for article in articles %}
+        <li>
+            <h2>{{ article.title }}</h2>
+            <img src="{{ asset('img_articles/' ~ article.photo) }}" alt="Photo de l'article" width="200" height="200">
+            <p>{{ article.content }}</p>
+            <p>Prix : {{ article.price }} €</p>
+            <p>Date de création : {{ article.createdAt|date('d/m/Y H:i') }}</p>
+            <button>Panier</button>
+            <button>Acheter</button>
+        </li>
+    {% endfor %}
 </ul>
 {% endblock %}

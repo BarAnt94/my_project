@@ -2,13 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\Article;
+use App\Entity\User;
+use App\Repository\UserRepository;
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/cart', name: 'app_cart_')]
 final class CartController extends AbstractController
@@ -76,5 +78,29 @@ final class CartController extends AbstractController
         }
         return $this->redirectToRoute('app_cart_cart_index');
     }
-    
+    #[Route('/purchase', name:'purchase', methods: ['POST','GET'])]
+    public function purchase(SessionInterface $session): Response
+    {   
+        // $wallet = $user->getWallets()->first();
+        // $cartTotal = $session->get('cart_total', 0);
+        // if ($wallet->getBalance() < $cartTotal) {
+        //     $this->addFlash('error', 'Solde insuffisant pour effectuer cet achat.');
+        //     return $this->redirectToRoute('app_cart_cart_index');
+        // }
+        // $wallet->setBalance($wallet->getBalance() - $cartTotal);
+        // $userRepository->save($user, true);
+        $session->remove('cart');
+        $session->remove('cart_total');
+        return $this->redirectToRoute('app_cart_purchase_success');
+    }
+    #[Route('/purchase/success', name:'purchase_success', methods: ['GET'])]
+    public function purchaseSuccess(): Response
+    {
+        $user = $this->getUser();
+
+        return $this->render('cart/purchase.html.twig', [
+        'user' => $user,
+    ]);
+    }
+
 }

@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class ArticleController extends AbstractController
 {
-    #[Route('/article/create', name: 'app_article')]
+    #[Route(name: 'app_article')]
     public function create(EntityManagerInterface $entityManager): Response
     {
         $article = new Article();
@@ -19,12 +19,12 @@ final class ArticleController extends AbstractController
         $article->setContent('Une bouteille de vin rouge de qualité.');
         $article->setCreatedAt(new \DateTime());
         $article->setPrice('19.99');
-        $article->setPhoto('bouteille-vin-isolee-blanc_167946-4.avif'); // Placeholder for photo data
+        $article->setPhoto('./img_articles/bouteille-vin-isolee-blanc_167946-4.avif'); // Placeholder for photo data
         $entityManager->persist($article);
         $entityManager->flush();
         return new Response('Article créé avec l\'ID : ' . $article->getId());
     }
-    #[Route('/article', name: 'app_article_show')]
+    #[Route(name: 'app_article_show')]
     public function show(EntityManagerInterface $entityManager): Response
     {
         $article = $entityManager->getRepository(Article::class)->findAll();
@@ -33,7 +33,7 @@ final class ArticleController extends AbstractController
             'controller_name' => 'ArticleController',
         ]);
     }
-    #[Route('/article/delete/{id}', name: 'app_article_delete')]
+    #[Route(name: 'app_article_delete')]
     public function delete(Article $article, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($article);

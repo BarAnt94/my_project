@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use App\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\AbstractType;
@@ -12,6 +13,10 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
+use App\Entity\Wallet;
+use App\Form\WalletType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class UserType extends AbstractType
 {
@@ -47,6 +52,13 @@ class UserType extends AbstractType
                 'label' => 'Email',
                 'required' => true,
                 'constraints'=>new Length(null, min:5, max:255),
+            ])
+            ->add('wallets', CollectionType::class, [
+                'entry_type' => WalletType::class, 
+                'allow_add' => true,              
+                'allow_delete' => true,      
+                'by_reference' => false,         
+                'label' => 'Argent dans le portefeuille',
             ])
         ;
     }

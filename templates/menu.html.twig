@@ -18,12 +18,14 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Profil</a>
-          {% if app.user %}
           <div class="dropdown-menu">
+            {% if app.user %}
             <a class="dropdown-item" href="{{ path('app_user_profile') }}">Mon Profil</a>
             <a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
             {# <a class="dropdown-item" href="{{ path('app_user_profile') }}">Paramètres</a> #}
             {% else %}
+            <div class="dropdown-menu">
+            {# <a class="dropdown-item" href="{{ path('app_user_profile') }}">Paramètres</a> #}
             <a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a>
             {% endif %}
           </div>

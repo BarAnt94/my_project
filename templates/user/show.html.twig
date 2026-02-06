@@ -39,6 +39,10 @@
                 <th>Telephone</th>
                 <td>{{ user.telephone }}</td>
             </tr>
+            <tr>
+                <th>Wallet Balance in €</th>
+                <td>{{ user.wallets.first().balance ?? 'N/A' }}</td>
+            </tr>
         </tbody>
     </table>
 

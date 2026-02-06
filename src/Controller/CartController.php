@@ -79,16 +79,20 @@ final class CartController extends AbstractController
         return $this->redirectToRoute('app_cart_cart_index');
     }
     #[Route('/purchase', name:'purchase', methods: ['POST','GET'])]
-    public function purchase(SessionInterface $session): Response
+    public function purchase(SessionInterface $session, UserRepository $userRepository): Response
     {   
-        // $wallet = $user->getWallets()->first();
-        // $cartTotal = $session->get('cart_total', 0);
-        // if ($wallet->getBalance() < $cartTotal) {
-        //     $this->addFlash('error', 'Solde insuffisant pour effectuer cet achat.');
-        //     return $this->redirectToRoute('app_cart_cart_index');
-        // }
-        // $wallet->setBalance($wallet->getBalance() - $cartTotal);
-        // $userRepository->save($user, true);
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        $wallet = $user->getWallets()->first();
+        $cartTotal = $session->get('cart_total', 0);
+        if ($wallet->getBalance() < $cartTotal) {
+            $this->addFlash('error', 'Solde insuffisant pour effectuer cet achat.');
+            return $this->redirectToRoute('app_cart_cart_index');
+        }
+        $wallet->setBalance($wallet->getBalance() - $cartTotal);
+        $userRepository->save($user, true);
         $session->remove('cart');
         $session->remove('cart_total');
         return $this->redirectToRoute('app_cart_purchase_success');

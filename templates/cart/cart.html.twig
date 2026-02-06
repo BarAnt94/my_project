@@ -34,6 +34,12 @@
             <form method="POST" action="{{ path('app_cart_purchase') }}">
                 <button type="submit" class="btn btn-primary">Acheter</button>
             </form>
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
         {% endif %}
 </div>
 {% endblock %}

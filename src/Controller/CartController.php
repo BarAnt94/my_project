@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Article;
 use App\Repository\UserRepository;
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -95,6 +96,38 @@ final class CartController extends AbstractController
         $userRepository->save($user, true);
         $session->remove('cart');
         $session->remove('cart_total');
+        return $this->redirectToRoute('app_cart_purchase_success');
+    }
+    #[Route('/purchase_direct', name:'purchase_direct', methods: ['POST','GET'])] 
+    public function purchaseDirect(Request $request, ArticleRepository $articleRepository,SessionInterface $session,UserRepository $userRepository) : Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        $id = $request->request->get('id');
+        if (!$id) {
+            $this->addFlash('error', 'Aucun article sélectionné.');
+            return $this->redirectToRoute('app_accueil');
+        }
+        $quantity = $request->request->get('quantity', 1);
+        $article = $articleRepository->find($id);
+        if (!$article) {
+            $this->addFlash('error', 'Article introuvable.');
+            return $this->redirectToRoute('app_accueil');
+        }
+
+        $total = $article->getPrice() * $quantity;
+        $wallet = $user->getWallets()->first();
+
+        if ($wallet->getBalance() < $total) {
+            $this->addFlash('error', 'Solde insuffisant pour cet achat.');
+            return $this->redirectToRoute('app_accueil');
+        }
+        
+        // Débiter le portefeuille
+        $wallet->setBalance($wallet->getBalance() - $total);
+        $userRepository->save($user, true);
         return $this->redirectToRoute('app_cart_purchase_success');
     }
     #[Route('/purchase/success', name:'purchase_success', methods: ['GET'])]

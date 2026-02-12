@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CatalogueController!{% endblock %}
+{% block title %}Catalogue!{% endblock %}
 
 {% block body %}
 <style>
@@ -9,7 +9,6 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
     <form method="get">
     <label>Catégorie :</label>
     <select name="category">
@@ -35,7 +34,9 @@
         {% if app.user %} 
             <form method="POST" action="{{ path('app_cart_add_to_cart', {'id': article.id}) }}">
             <input type="number" name="quantity" value="1"> <button type="submit">Ajouter au Panier avec Quantité</button> </form> 
-            <form method="POST" action="{{ path('app_cart_purchase', {'id': article.id}) }}" data-turbo="false"> 
+            <form method="POST" action="{{ path('app_cart_purchase_direct') }}" data-turbo="false"> 
+            <input type="hidden" name="id" value="{{ article.id }}"> 
+            <input type="hidden" name="quantity" value="1">
             <button type="submit">Acheter</button> </form> 
         {% else %}
             <button type ="button" disabled>Ajouter au Panier (Connectez-vous d'abord)</button> 

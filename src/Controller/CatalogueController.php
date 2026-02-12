@@ -17,7 +17,6 @@ final class CatalogueController extends AbstractController
         $maxPrice = $request->query->get('maxPrice');
         $articles = $catalogueRepository->findByFilters($category, $maxPrice);
         return $this->render('catalogue/catalogue.html.twig', [
-            'controller_name' => 'CatalogueController',
             'maxPrice' => $maxPrice,
             'catalogues' => $catalogueRepository->findAll(),
             'articles' => $articles,

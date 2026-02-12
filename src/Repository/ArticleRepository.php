@@ -25,6 +25,23 @@ class ArticleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function findByFilters(?string $category, ?float $maxPrice)
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        if ($category) {
+            $qb->andWhere('c.Catalogues = :category')
+            ->setParameter('category', $category);
+        }
+
+        if ($maxPrice) {
+            $qb->andWhere('c.price <= :maxPrice')
+            ->setParameter('maxPrice', $maxPrice);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Article[] Returns an array of Article objects
     //     */

@@ -19,10 +19,6 @@ class WalletType extends AbstractType
                 'label' => 'Balance (€)',
                 'required' => true,
             ])
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
-            ])
         ;
     }
 

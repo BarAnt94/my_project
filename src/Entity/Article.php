@@ -8,6 +8,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
+#[ORM\HasLifecycleCallbacks] 
 class Article
 {
     #[ORM\Id]
@@ -30,6 +31,23 @@ class Article
     #[ORM\Column(length: 255)]
     private ?string $photo = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $Catalogues = null;
+    
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime(); // valeur par défaut
+    }
+
+    // -------- Lifecycle callback --------
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        if (!$this->createdAt) {
+            $this->createdAt = new \DateTime();
+        }
+    }
 
     public function getId(): ?int
     {
@@ -98,6 +116,18 @@ class Article
     public function setPhoto(string $photo): static
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getCatalogues(): ?string
+    {
+        return $this->Catalogues;
+    }
+
+    public function setCatalogues(string $Catalogues): static
+    {
+        $this->Catalogues = $Catalogues;
 
         return $this;
     }

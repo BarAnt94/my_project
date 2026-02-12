@@ -57,8 +57,11 @@ class UserType extends AbstractType
                 'entry_type' => WalletType::class, 
                 'allow_add' => true,              
                 'allow_delete' => true,      
-                'by_reference' => false,         
-                'label' => 'Argent dans le portefeuille',
+                'by_reference' => false,
+                'label' => false,  
+                'entry_options' => [
+                'label' => false,   // 🔥 supprime le "0"
+                ]
             ])
         ;
     }

@@ -37,6 +37,11 @@ final class UserController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager,UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
+        if ($user->getWallets()->isEmpty()) {
+            $wallet = new Wallet();
+            $wallet->setBalance('0'); // optionnel
+            $user->addWallet($wallet);
+        }
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -52,6 +57,7 @@ final class UserController extends AbstractController
 
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
+
 
         return $this->render('user/new.html.twig', [
             'user' => $user,

@@ -20,6 +20,7 @@ final class UserController extends AbstractController
     #[Route(name: 'app_user_profile', methods: ['GET'])]
     public function profile(UserRepository $userRepository): Response
     {
+        $user = $this->getUser();
         return $this->render('user/profile.html.twig', [
             'users' => $userRepository->findAll(),
         ]);

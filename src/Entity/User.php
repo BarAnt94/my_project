@@ -58,9 +58,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Wallet::class, mappedBy: 'user',cascade: ['persist', 'remove'],orphanRemoval: true)]
     private Collection $wallets;
 
-    #[ORM\ManyToOne(inversedBy: 'user')]
-    private ?OrderItem $orderItem = null;
-
     /**
      * @var Collection<int, Order>
      */
@@ -259,18 +256,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $wallet->setUser(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getOrderItem(): ?OrderItem
-    {
-        return $this->orderItem;
-    }
-
-    public function setOrderItem(?OrderItem $orderItem): static
-    {
-        $this->orderItem = $orderItem;
 
         return $this;
     }

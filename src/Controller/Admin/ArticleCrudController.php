@@ -5,11 +5,13 @@ namespace App\Controller\Admin;
 use App\Entity\Article;
 use Dom\Text;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EntityField;
 
 class ArticleCrudController extends AbstractCrudController
 {
@@ -21,7 +23,6 @@ class ArticleCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
             TextField::new('title'),
             TextField::new('content'),
             TextField::new('price'),
@@ -31,7 +32,9 @@ class ArticleCrudController extends AbstractCrudController
             ->setUploadDir('public/img_articles/')
             ->setUploadedFileNamePattern('[randomhash].[extension]')
             ->setRequired(false),
-            TextField::new('category'),
+            AssociationField::new('category')
+                ->setCrudController(CategoryCrudController::class)
+                ->setFormTypeOption('choice_label', 'name'),
         ];
     }
 

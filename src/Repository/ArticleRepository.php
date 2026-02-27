@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Article;
+use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -25,19 +26,18 @@ class ArticleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    public function findByFilters(?string $category, ?float $maxPrice)
+    public function findByFilters(?Category $category, ?float $maxPrice)
     {
-        $qb = $this->createQueryBuilder('c');
-
+        $qb = $this->createQueryBuilder('a');
         if ($category) {
-            $qb->andWhere('c.category = :category')
+            $qb->andWhere('a.category = :category')
             ->setParameter('category', $category);
         }
-
-        if ($maxPrice) {
-            $qb->andWhere('c.price <= :maxPrice')
-            ->setParameter('maxPrice', $maxPrice);
-        }
+        // dd($category);
+        // if ($maxPrice) {
+        //     $qb->andWhere('a.price <= :maxPrice')
+        //     ->setParameter('maxPrice', $maxPrice);
+        // }
 
         return $qb->getQuery()->getResult();
     }

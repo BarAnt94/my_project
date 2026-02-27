@@ -6,6 +6,7 @@ use App\Entity\Adress;
 use App\Entity\Article;
 use App\Entity\User;
 use App\Entity\Wallet;
+use App\Entity\Category;
 use App\Controller\Admin\UserCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -59,6 +60,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Users', 'fa fa-users', User::class);
         yield MenuItem::linkToCrud('Wallets', 'fa fa-wallet', Wallet::class);
         yield MenuItem::linkToCrud('Adresses', 'fa fa-newspaper', Adress::class);
+        yield MenuItem::linkToCrud('Categorys', 'fa fa-list', Category::class);
         yield MenuItem::linkToCrud('Articles', 'fa fa-newspaper', Article::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }

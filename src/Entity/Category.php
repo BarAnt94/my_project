@@ -14,12 +14,25 @@ class Category
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+    
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+    public function setId(int $id): static
+    {
+        $this->id = $id;
 
+        return $this;
+    }
     /**
      * @var Collection<int, Article>
      */
     #[ORM\OneToMany(targetEntity: Article::class, mappedBy: 'category')]
     private Collection $article;
+
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
 
     public function __construct()
     {
@@ -52,6 +65,18 @@ class Category
                 $article->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }

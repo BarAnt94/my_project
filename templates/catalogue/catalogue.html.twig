@@ -9,7 +9,7 @@
 </style>
 
 <div class="example-wrapper">
-    <form method="get">
+    <form method="get" action="{{ path('app_catalogues') }}">
     <label>Catégorie :</label>
     <select name="category">
         <option value="">Toutes</option>
@@ -19,7 +19,6 @@
         <option value="Whisky" {{ category == 'Whisky' ? 'selected' : '' }}>Whisky</option>
         <option value="Bière" {{ category == 'Bière' ? 'selected' : '' }}>Bière</option>
     </select>
-
     <label>Prix maximum : {{ maxPrice}} €</label>
     <input type="range" name="maxPrice" min="0" max="1000" value="{{ maxPrice|default(1000) }}" oninput="this.nextElementSibling.value = this.value">
     <output>{{ maxPrice|default(1000) }}</output>

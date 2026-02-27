@@ -31,7 +31,7 @@
                 {% endfor %}
             </ul>
             <h3>Total : {{ total }} €</h3>
-            <form method="POST" action="{{ path('app_cart_purchase') }}">
+            <form method="POST" action="{{ path('get_command') }}" data-turbo="false">
                 <button type="submit" class="btn btn-primary">Acheter</button>
             </form>
             {% for message in app.flashes('error') %}

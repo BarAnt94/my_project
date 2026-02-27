@@ -9,29 +9,36 @@
 </style>
 
 <div class="example-wrapper">
-{% if articles is empty %}
+{% if cart is empty %}
     <p>Aucun article trouvé</p>
 {% else %}
     <table>
     <thead>
         <tr>
-            <th>ID</th>
             <th>Titre</th>
             <th>Description</th>
             <th>Photo</th>
             <th>Prix</th>
+            <th>Quantité</th>
         </tr>
     </thead>
-     {% for article in articles %}
+     {% for item in items %}
     <tbody>
         <tr>
-            <td>{{ article.id }}</td>
-            <td>{{ article.title }}</td>
-            <td>{{ article.content }}</td>
-            <td><img src="{{ asset('img_articles/' ~ article.photo) }}" alt="Photo de l'article" width="200" height="200"></td>
-            <td>{{ article.price }} €</td>
+            <td>{{ item.article.title }}</td>
+            <td>{{ item.article.content }}</td>
+            <td><img src="{{ asset('img_articles/' ~ item.article.photo) }}" alt="Photo de l'article" width="200" height="200"></td>
+            <td>{{ item.article.price }} €</td>
+            <td>{{ item.quantity }}</td>
         </tr>
     </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">Total</td>
+            <td>{{ total }} €</td>
+            <td></td>
+        </tr>
+    </tfoot>
     </table>
     {% endfor %}
     {% endif %}
@@ -39,15 +46,19 @@
     <p>Vous n'avez aucune adresse enregistrée.</p>
     <a href="{{ path('app_adress_new') }}">Ajouter une adresse</a>
     {% else %}
-        <form method="POST" action="{{ path('app_cart_purchase') }}" data-turbo="false">
+        <form method="POST" action="{{ path('command_purchase') }}" data-turbo="false">
         <label for="address">Sélectionnez une adresse de livraison :</label>
         <select name="addressId" id="address">
         {% for adresse in adresses %}
             <option value="{{ adresse.id }}">{{ adresse.title }} - {{ adresse.adress }}, {{ adresse.city }}</option>
         {% endfor %}
-    </select>
-    <button type="submit">Confirmer la commande</button>
-</form>
+        </select>
+        <button type="submit">Confirmer la commande</button><br>
+        </form>
+        <form method="POST" action="{{ path('command_cancel') }}" data-turbo="false">
+        <label for="cancel">Annuler la commande :</label>
+        <button type="submit" name="cancel" value="true">Annuler</button>
+        </form>
     {% endif %}
 </table>
 </div>

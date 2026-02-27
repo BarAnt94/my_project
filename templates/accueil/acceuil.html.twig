@@ -14,13 +14,8 @@
             <p>Date de création : {{ article.createdAt|date('d/m/Y H:i') }}</p>
             {% if app.user %}
                 <form method="POST" action="{{ path('app_cart_add_to_cart', {'id': article.id}) }}">
-                <input type="number" min="1" name="quantity" value="1">
+                <input type="number" min="1" name="quantity" value="1"><br>
                 <button type="submit">Ajouter au Panier avec Quantité</button>
-                </form>
-                <form method="POST" action="{{ path('get_command') }}" data-turbo="false">
-                <input type="hidden" name="id" value="{{ article.id }}"> 
-                <input type="hidden" name="quantity" value="1">
-                    <button type="submit">Acheter</button>
                 </form>
             {% else %}
                 <button type ="button" disabled>Ajouter au Panier (Connectez-vous d'abord)</button>

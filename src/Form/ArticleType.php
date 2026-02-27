@@ -6,6 +6,7 @@ use App\Entity\Article;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Collection;
 
 class ArticleType extends AbstractType
 {
@@ -17,7 +18,15 @@ class ArticleType extends AbstractType
             ->add('createdAt')
             ->add('price')
             ->add('photo')
-            ->add('Catalogues')
+            ->add('category',Collection ::class, [
+                'fields' => [
+                    'Vin' => null,
+                    'Spiritueux' => null,
+                    'Champagne' => null,
+                    'Whisky' => null,
+                    'Bière' => null,
+                ],
+            ])
         ;
     }
 

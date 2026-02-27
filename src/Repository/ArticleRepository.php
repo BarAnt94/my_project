@@ -30,7 +30,7 @@ class ArticleRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('c');
 
         if ($category) {
-            $qb->andWhere('c.Catalogues = :category')
+            $qb->andWhere('c.category = :category')
             ->setParameter('category', $category);
         }
 

@@ -31,7 +31,7 @@ class ArticleCrudController extends AbstractCrudController
             ->setUploadDir('public/img_articles/')
             ->setUploadedFileNamePattern('[randomhash].[extension]')
             ->setRequired(false),
-            TextField::new('Catalogues'),
+            TextField::new('category'),
         ];
     }
 

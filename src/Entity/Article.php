@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ArticleRepository;
 use BcMath\Number;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,13 +33,19 @@ class Article
     #[ORM\Column(length: 255)]
     private ?string $photo = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Catalogues = null;
-    
+    #[ORM\ManyToOne(inversedBy: 'article')]
+    private ?Category $category = null;
 
+    /**
+     * @var Collection<int, OrderItem>
+     */
+    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'article')]
+    private Collection $orderItems;
+    
     public function __construct()
     {
         $this->createdAt = new \DateTime(); // valeur par défaut
+        $this->orderItems = new ArrayCollection();
     }
 
     // -------- Lifecycle callback --------
@@ -120,14 +128,44 @@ class Article
         return $this;
     }
 
-    public function getCatalogues(): ?string
+    public function getCategory(): ?Category
     {
-        return $this->Catalogues;
+        return $this->category;
     }
 
-    public function setCatalogues(string $Catalogues): static
+    public function setCategory(?Category $category): static
     {
-        $this->Catalogues = $Catalogues;
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderItem>
+     */
+    public function getOrderItems(): Collection
+    {
+        return $this->orderItems;
+    }
+
+    public function addOrderItem(OrderItem $orderItem): static
+    {
+        if (!$this->orderItems->contains($orderItem)) {
+            $this->orderItems->add($orderItem);
+            $orderItem->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderItem(OrderItem $orderItem): static
+    {
+        if ($this->orderItems->removeElement($orderItem)) {
+            // set the owning side to null (unless already changed)
+            if ($orderItem->getArticle() === $this) {
+                $orderItem->setArticle(null);
+            }
+        }
 
         return $this;
     }

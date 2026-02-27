@@ -13,11 +13,11 @@
     <label>Catégorie :</label>
     <select name="category">
         <option value="">Toutes</option>
-        <option value="Vin" {{ catalogues == 'Vin' ? 'selected' : '' }}>Vin</option>
-        <option value="Spiritueux" {{ catalogues == 'Spiritueux' ? 'selected' : '' }}>Spiritueux</option> 
-        <option value="Champagne" {{ catalogues == 'Champagne' ? 'selected' : '' }}>Champagne</option>
-        <option value="Whisky" {{ catalogues == 'Whisky' ? 'selected' : '' }}>Whisky</option>
-        <option value="Bière" {{ catalogues == 'Bière' ? 'selected' : '' }}>Bière</option>
+        <option value="Vin" {{ category == 'Vin' ? 'selected' : '' }}>Vin</option>
+        <option value="Spiritueux" {{ category == 'Spiritueux' ? 'selected' : '' }}>Spiritueux</option> 
+        <option value="Champagne" {{ category == 'Champagne' ? 'selected' : '' }}>Champagne</option>
+        <option value="Whisky" {{ category == 'Whisky' ? 'selected' : '' }}>Whisky</option>
+        <option value="Bière" {{ category == 'Bière' ? 'selected' : '' }}>Bière</option>
     </select>
 
     <label>Prix maximum : {{ maxPrice}} €</label>
@@ -33,11 +33,9 @@
         {{ article.price }} €
         {% if app.user %} 
             <form method="POST" action="{{ path('app_cart_add_to_cart', {'id': article.id}) }}">
-            <input type="number" name="quantity" min="1" value="1"> <button type="submit">Ajouter au Panier avec Quantité</button> </form> 
-            <form method="POST" action="{{ path('get_command', {'id': article.id}) }}" data-turbo="false"> 
-            <input type="hidden" name="id" value="{{ article.id }}"> 
-            <input type="hidden" name="quantity" value="1">
-            <button type="submit">Acheter</button> </form> 
+            <input type="number" name="quantity" min="1" value="1"><br>
+            <button type="submit">Ajouter au Panier avec Quantité</button>
+            </form> 
         {% else %}
             <button type ="button" disabled>Ajouter au Panier (Connectez-vous d'abord)</button> 
             <button type ="button" disabled>Acheter (Connectez-vous d'abord)</button> 

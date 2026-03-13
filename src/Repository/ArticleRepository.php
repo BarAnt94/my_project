@@ -33,11 +33,10 @@ class ArticleRepository extends ServiceEntityRepository
             $qb->andWhere('a.category = :category')
             ->setParameter('category', $category);
         }
-        // dd($category);
-        // if ($maxPrice) {
-        //     $qb->andWhere('a.price <= :maxPrice')
-        //     ->setParameter('maxPrice', $maxPrice);
-        // }
+        if ($maxPrice) {
+            $qb->andWhere('a.price <= :maxPrice')
+            ->setParameter('maxPrice', $maxPrice);
+        }
 
         return $qb->getQuery()->getResult();
     }

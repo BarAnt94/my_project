@@ -47,8 +47,16 @@
     <a href="{{ path('app_adress_new') }}">Ajouter une adresse</a>
     {% else %}
         <form method="POST" action="{{ path('command_purchase') }}" data-turbo="false">
-        <label for="address">Sélectionnez une adresse de livraison :</label>
+        <label for="address">Sélectionnez une adresse de livraison :</label><br>
         <select name="addressId" id="address">
+        <option value="">Aucune adresse de livraison sélectionnée</option>
+        {% for adresse in adresses %}
+            <option value="{{ adresse.id }}">{{ adresse.title }} - {{ adresse.adress }}, {{ adresse.city }}</option>
+        {% endfor %}
+        </select>
+        <label for="secondaryAddress">Sélectionnez une adresse de facturation (optionnel) :</label>
+        <select name="secondaryAddressId" id="secondaryAddress">
+        <option value="">Aucune adresse de facturation</option>
         {% for adresse in adresses %}
             <option value="{{ adresse.id }}">{{ adresse.title }} - {{ adresse.adress }}, {{ adresse.city }}</option>
         {% endfor %}

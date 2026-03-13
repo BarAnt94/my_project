@@ -12,12 +12,10 @@
     <form method="get" action="{{ path('app_catalogues') }}">
     <label>Catégorie :</label>
     <select name="category">
-        <option value="">Toutes</option>
-        <option value="Vin" {{ category == 'Vin' ? 'selected' : '' }}>Vin</option>
-        <option value="Spiritueux" {{ category == 'Spiritueux' ? 'selected' : '' }}>Spiritueux</option> 
-        <option value="Champagne" {{ category == 'Champagne' ? 'selected' : '' }}>Champagne</option>
-        <option value="Whisky" {{ category == 'Whisky' ? 'selected' : '' }}>Whisky</option>
-        <option value="Bière" {{ category == 'Bière' ? 'selected' : '' }}>Bière</option>
+        <option value="">Toutes les catégories</option>
+        {% for cat in categories %}
+            <option value="{{ cat.name }}" {% if cat.name == category %}selected{% endif %}>{{ cat.name }}</option>
+        {% endfor %}
     </select>
     <label>Prix maximum : {{ maxPrice}} €</label>
     <input type="range" name="maxPrice" min="0" max="1000" value="{{ maxPrice|default(1000) }}" oninput="this.nextElementSibling.value = this.value">
@@ -28,6 +26,7 @@
     {% for article in articles %}
         {{ article.title }}<br>
         <img src="{{ asset('img_articles/' ~ article.photo) }}" alt="Photo de l'article" width="200" height="200"></li> <li>{{ article.content }}</li> 
+        {{article.category.name}}<br>
         <li>Date de création : {{ article.createdAt|date('d/m/Y H:i') }}</li>
         {{ article.price }} €
         {% if app.user %} 

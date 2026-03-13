@@ -16,20 +16,13 @@ final class CatalogueController extends AbstractController
     {
         $categoryName = $request->query->get('category');
         $maxPrice = $request->query->get('maxPrice');
-        if ($categoryName) {
-            $category = $categoryRepository->findOneBy(['name' => $categoryName]);
-        }
-        else {
-            $category = null;
-        }
-        if ($maxPrice) {
-            $maxPrice = (float)$maxPrice;
-        }
-        $articles = $articleRepository->findByFilters($category, $maxPrice);
+        $categories = $categoryRepository->findAll();
+        $articles = $articleRepository->findByFilters($categoryName ? $categoryRepository->findOneBy(['name' => $categoryName]) : null, $maxPrice ? (float)$maxPrice : null);
         return $this->render('catalogue/catalogue.html.twig', [
+            'categories' => $categories,    
+            'category' => $categoryName,
             'maxPrice' => $maxPrice,
-            'category' => $category,
-            'articles' => $articles,
+            'articles' => $articles
         ]);
     }
 }

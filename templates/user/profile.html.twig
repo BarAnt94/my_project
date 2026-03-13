@@ -5,5 +5,6 @@
 {% block body %}
     <h1>User Profile</h1>
     <a href="{{ path('app_adress_index') }}">Mes Adresses</a><br>
-    <a href="{{ path('app_user_edit', {'id': app.user.id}) }}">Edit Profile</a>
+    <a href="{{ path('app_user_edit', {'id': app.user.id}) }}">Edit Profile</a><br>
+    <a href="{{ path('app_checkout_index') }}">Mes Commandes</a>
 {% endblock %}

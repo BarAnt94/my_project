@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use App\Repository\OrderRepository;
+use App\Repository\OrderItemRepository;
 use App\Repository\UserRepository;
 use App\Repository\AdressRepository;
 use App\Repository\ArticleRepository;
@@ -40,7 +42,7 @@ final class CommandController extends AbstractController
         return $this->render('command/index.html.twig', $renderData);   
     }
     #[Route('/command/purchase', name:'command_purchase', methods: ['POST','GET'])]
-    public function purchase(SessionInterface $session, UserRepository $userRepository): Response
+    public function purchase(SessionInterface $session, UserRepository $userRepository, OrderRepository $orderRepository, OrderItemRepository $orderItemRepository): Response
     {   
         $user = $this->getUser();
         if (!$user) {
@@ -58,6 +60,8 @@ final class CommandController extends AbstractController
         }
         $wallet->setBalance($wallet->getBalance() - $cartTotal);
         $userRepository->save($user, true);
+        $orderRepository->createOrder($user, $session->get('cart', []));
+        $orderItemRepository->createOrderItems($session->get('cart', []),$this->getUser());
         $session->remove('cart');
         $session->remove('cart_total');
         return $this->redirectToRoute('command_purchase_success');

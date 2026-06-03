@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Command;
+// use App\Entity\Command;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -13,7 +13,7 @@ class CommandRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Command::class);
+        parent::__construct($registry, 'Command');
     }
 
 //    /**

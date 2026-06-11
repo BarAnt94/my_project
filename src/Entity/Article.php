@@ -41,9 +41,6 @@ class Article
      */
     #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'article')]
     private Collection $orderItems;
-
-    #[ORM\ManyToOne(inversedBy: 'article')]
-    private ?Order $PurchaseOrder = null;
     
     public function __construct()
     {
@@ -169,18 +166,6 @@ class Article
                 $orderItem->setArticle(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getPurchaseOrder(): ?Order
-    {
-        return $this->PurchaseOrder;
-    }
-
-    public function setPurchaseOrder(?Order $PurchaseOrder): static
-    {
-        $this->PurchaseOrder = $PurchaseOrder;
 
         return $this;
     }

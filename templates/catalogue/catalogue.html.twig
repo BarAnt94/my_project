@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Catalogue!{% endblock %}
+{% block title %}Catalogue{% endblock %}
 
 {% block body %}
 <style>
@@ -26,8 +26,8 @@
     {% for article in articles %}
         {{ article.title }}<br>
         <img src="{{ asset('img_articles/' ~ article.photo) }}" alt="Photo de l'article" width="200" height="200"></li> <li>{{ article.content }}</li> 
-        {{article.category.name}}<br>
-        <li>Date de création : {{ article.createdAt|date('d/m/Y H:i') }}</li>
+        <p> Catégorie : {{article.category.name}}</p>
+        <li>Mise en vente : {{ article.createdAt|date('d/m/Y H:i') }}</li>
         {{ article.price }} €
         {% if app.user %} 
             <form method="POST" action="{{ path('app_cart_add_to_cart', {'id': article.id}) }}">

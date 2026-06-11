@@ -11,19 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class ArticleController extends AbstractController
 {
-    #[Route(name: 'app_article')]
-    public function create(EntityManagerInterface $entityManager): Response
-    {
-        $article = new Article();
-        $article->setTitle('Bouteille de vin');
-        $article->setContent('Une bouteille de vin rouge de qualité.');
-        $article->setCreatedAt(new \DateTime());
-        $article->setPrice('19.99');
-        $article->setPhoto('./img_articles/bouteille-vin-isolee-blanc_167946-4.avif'); // Placeholder for photo data
-        $entityManager->persist($article);
-        $entityManager->flush();
-        return new Response('Article créé avec l\'ID : ' . $article->getId());
-    }
+
     #[Route(name: 'app_article_show')]
     public function show(EntityManagerInterface $entityManager): Response
     {

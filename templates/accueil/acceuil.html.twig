@@ -4,6 +4,7 @@
 {% block body %}
 <h1>Bienvenue sur la page d'accueil!</h1>
 <p>Voici quelques produits en vedette :</p>
+<div class="acceuil">
 <ul>
     {% for article in articles %}
         <li>
@@ -11,7 +12,7 @@
             <img src="{{ asset('img_articles/' ~ article.photo) }}" alt="Photo de l'article" width="200" height="200">
             <p>{{ article.content }}</p>
             <p>Prix : {{ article.price }} €</p>
-            <p>Date de création : {{ article.createdAt|date('d/m/Y H:i') }}</p>
+            <p>Mise en vente : {{ article.createdAt|date('d/m/Y H:i') }}</p>
             {% if app.user %}
                 <form method="POST" action="{{ path('app_cart_add_to_cart', {'id': article.id}) }}">
                 <input type="number" min="1" name="quantity" value="1"><br>
@@ -25,4 +26,5 @@
         </li>
     {% endfor %}
 </ul>
+</div>
 {% endblock %}
